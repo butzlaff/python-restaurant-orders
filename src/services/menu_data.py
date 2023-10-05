@@ -23,18 +23,27 @@ class MenuData:
             print(f"File '{self.source_path}' not found.")
 
     def create_dishes(self) -> None:
-        for index, dish_in in enumerate(self.dish_dict):
+        new_menu = {}
 
+        for dish_in in self.dish_dict:
             dish_name, price, ingredient_name, recipe_amount = dish_in
 
-            new_dish = Dish(dish_name, float(price))
-            self.dishes.add(new_dish)
-            new_dish.add_ingredient_dependency(
-                Ingredient(ingredient_name),
-                int(recipe_amount))
+            if dish_name in new_menu:
+                dish = new_menu[dish_name]
+                dish.add_ingredient_dependency(
+                    Ingredient(ingredient_name),
+                    int(recipe_amount))
+            else:
+                new_dish = Dish(dish_name, float(price))
+                self.dishes.add(new_dish)
+                new_menu[dish_name] = new_dish
+                new_dish.add_ingredient_dependency(
+                    Ingredient(ingredient_name),
+                    int(recipe_amount))
+
         return self.dishes
 
 
-new_menu = MenuData('tests/mocks/menu_base_data.csv')
+menu = MenuData('tests/mocks/menu_base_data.csv')
 
-print(new_menu.create_dishes())
+print(menu.create_dishes())
