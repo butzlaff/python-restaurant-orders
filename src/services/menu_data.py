@@ -35,11 +35,11 @@ class MenuData:
                     int(recipe_amount))
             else:
                 new_dish = Dish(dish_name, float(price))
-                self.dishes.add(new_dish)
                 new_menu[dish_name] = new_dish
                 new_dish.add_ingredient_dependency(
                     Ingredient(ingredient_name),
                     int(recipe_amount))
+                self.dishes.add(new_dish)
 
         return self.dishes
 
