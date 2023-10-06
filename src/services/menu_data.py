@@ -42,8 +42,3 @@ class MenuData:
                 self.dishes.add(new_dish)
 
         return self.dishes
-
-
-menu = MenuData('tests/mocks/menu_base_data.csv')
-
-print(menu.create_dishes())

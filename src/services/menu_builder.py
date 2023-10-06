@@ -2,9 +2,11 @@ from typing import Dict, List
 
 from services.inventory_control import InventoryMapping
 from services.menu_data import MenuData
+from models.ingredient import Restriction
 
-DATA_PATH = "data/menu_base_data.csv"
-INVENTORY_PATH = "data/inventory_base_data.csv"
+
+DATA_PATH = "tests/mocks/menu_base_data.csv"
+INVENTORY_PATH = "tests/mocks/inventory_base_data.csv"
 
 
 class MenuBuilder:
@@ -29,17 +31,18 @@ class MenuBuilder:
         menu = []
         dishes = self.menu_data.dishes
         for dish in dishes:
-            if restriction and restriction not in dish.get_restrictions():
-                continue
-            main_menu = {
-                "dish_name": dish.name,
-                "price": dish.price,
-                "restrictions": dish.get_restrictions(),
-                "ingredients": dish.get_ingredients(),
-            }
-            menu.append(main_menu)
+            not_has_restrictions = restriction not in dish.get_restrictions()
+            if not restriction or not_has_restrictions:
+                main_menu = {
+                    "dish_name": dish.name,
+                    "price": dish.price,
+                    "restrictions": dish.get_restrictions(),
+                    "ingredients": dish.get_ingredients(),
+                }
+                menu = [*menu, main_menu]
         return menu
 
 
 menu = MenuBuilder()
-menu.get_main_menu()
+oi = menu.get_main_menu(Restriction.ANIMAL_DERIVED)
+print(oi)
